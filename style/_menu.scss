@@ -1,0 +1,92 @@
+.navbar {
+    background-color: $color-white;
+    border-radius: 16px;
+    padding: 1.5rem 2rem;
+    width: 100%;
+    box-shadow: 0px 4px 16px rgba(17, 17, 17, 0.04);
+
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        z-index: 10;
+
+        .navbar__logo {
+            text-decoration: none;
+            color: $color-text;
+        }
+    }
+
+    &__menu {
+        display: none;
+
+        &_item {
+            border-radius: 8px;
+            padding: 5px 10px;
+            list-style: none;
+            transition: 0.3;
+        }
+
+        &_item:hover &_link {
+            color: $color-primary;
+        }
+
+        &_link,
+        &_link:visited {
+            background-color: transparent;
+            border-width: 0;
+            cursor: pointer;
+            text-decoration: none;
+            color: $color-text;
+
+        }
+
+        &_link-new {
+            color: $color-primary
+        }
+    }
+
+    &__menu-show {
+        margin-top: 1rem;
+        display: block;
+    }
+
+
+    &__icon {
+        background-color: transparent;
+        cursor: pointer;
+        border-radius: 8px;
+        padding: 5px 5px 0;
+        border: 0;
+    }
+}
+
+// md
+@media only screen and (min-width : 768px) {
+    .navbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        &__menu {
+            display: flex;
+            align-items: center;
+
+            &_item {
+                margin-right: 5px;
+
+                &:last-child {
+                    margin-right: 0;
+                }
+            }
+
+            &-show {
+                margin-top: 0;
+            }
+        }
+
+        &__icon {
+            display: none;
+        }
+    }
+}

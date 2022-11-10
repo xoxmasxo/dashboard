@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAc/8AAAAAAABaxwAAX9QA////AABl4AAAbPAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEQAAAAAAAAEEUAAAAACIkERQiIgACIkEREUIiIDM0FEQRQzMzMzNDM0EUMzNVVVVVVBRVVVVVVVVVQUVVZmZmZmZkFGZmZmZmZmZGZgAAAAAAAAAAEAAAAAAAAAGAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAQAA" />
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/normalize.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <title>Task Helpdesk</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+
+<body>
+    <div id="app">
+        <!-- menu -->
+        <header>
+            <nav class="navbar">
+                <div class="navbar__header">
+                    <a href="#" class="navbar__logo">Helpdesk</a>
+                    <button @click="showMenu = !showMenu" class="navbar__icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M3 12H21" stroke="#3C5BFA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M3 6H21" stroke="#3C5BFA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M3 18H21" stroke="#3C5BFA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </button>
+                </div>
+                <ul class="navbar__menu" :class="{ 'navbar__menu-show': showMenu }">
+                    <li class="navbar__menu_item">
+                        <a href="https://basecamp.com/" target="_blank" class="navbar__menu_link">Basecamp</a>
+                    </li>
+                    <li class="navbar__menu_item">
+                        <a href="https://webformatter.com/html" target="_blank" class="navbar__menu_link">HTML Formatter</a>
+                    </li>
+                    <li class="navbar__menu_item">
+                        <a href="https://developers.google.com/speed/libraries" target="_blank" class="navbar__menu_link">Google JQuery</a>
+                    </li>
+                    <li class="navbar__menu_item">
+                        <button @click="showModal($event, 2)" class="navbar__menu_link navbar__menu_link-new">Changelog</button>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+        <!-- body -->
+        <form name="page">
+            <div class="page">
+                <!-- jumps -->
+                <section class="block block_1">
+                    <textarea @input="countLines($event), resizeArea($event)" data-type='in' placeholder="Place here jumps to copy"></textarea>
+                    <button @click="generateLinks($event)" class="btn btn-edit"></button>
+                    <span class="tag" :class="{ 'tag-active': incomeLinksNumber }"><output>{{ incomeLinksNumber }}</output> lines in field</span>
+                </section>
+
+                <!-- links -->
+                <section class="block block_2">
+                    <label for="inp_2_1">New domain</label>
+                    <div class="block__links">
+                        <input id="inp_2_1" @change="addSlashToDomain($event)" type="text" placeholder="New domain" rows="5">
+                        <button @click="copyValue($event)" class="btn btn-copy"></button>
+                    </div>
+
+                    <label for="inp_2_2">Worker URL</label>
+                    <div class="block__links">
+                        <input id="inp_2_2" type="text" placeholder="Worker URL">
+                        <button @click="openWorkerLink($event)" class="btn btn-link"></button>
+                    </div>
+
+                    <label for="inp_2_3">Double Link</label>
+                    <div class="block__links">
+                        <input @change="generatePHPTag($event)" id="inp_2_3" type="text" placeholder="Doble Link">
+                        <button @click="copyValue($event)" class="btn btn-copy"></button>
+                    </div>
+
+                    <label for="inp_2_4">Back Link</label>
+                    <div class="block__links">
+                        <input @change="generatePHPTag($event)" id="inp_2_4" type="text" placeholder="Back Link">
+                        <button @click="copyValue($event)" class="btn btn-copy"></button>
+                    </div>
+
+                    <label for="inp_2_5">Other</label>
+                    <div class="block__links">
+                        <input id="inp_2_5" type="text" placeholder="Other">
+                        <button @click="copyValue($event)" class="btn btn-copy"></button>
+                    </div>
+                </section>
+
+                <!-- push -->
+                <section class="block block_3">
+                    <div class="block_3__controls">
+                        <!-- <button @click="addNewScriptBlock($event)" class="btn btn-add"></button> -->
+                        <button @click="showModal($event, 1)" class="btn btn-settings"></button>
+                    </div>
+                    <div class="block_3__area">
+                        <div class="push">
+                            <textarea @input="resizeArea($event)" @change="replaceDoubleQuotes($event)" placeholder="Place script here"></textarea>
+                            <button @click="copyValue($event)" class="btn btn-copy"></button>
+                            <button @click="addCodeTemplate($event)" class="btn btn-code" data-template="0">+ Almightypush</button>
+                            <button @click="addCodeTemplate($event)" class="btn btn-code" data-template="1">+ OneSignal</button>
+                            <button @click="addCodeTemplate($event)" class="btn btn-code" data-template="2">+ Backoffer</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- done links -->
+                <section class="block block_4">
+                    <div class="block_4__area">
+                        <textarea id="inp_4_1" @input="countLines($event), resizeArea($event)" @change="generateCompletedLinks($event)" data-type='out' placeholder="Place here completed jumps"></textarea>
+                        <button @click="copyValue($event)" class="btn btn-copy"></button>
+                        <span class="tag" :class="{ 'tag-active': outcomeLinksNumber }"><output>{{ outcomeLinksNumber }}</output> lines in field</span>
+                    </div>
+                </section>
+                <section class="block block_5">
+                    <a v-for="item in outcomeLinks" :href="item" target="_blank">
+                        {{ item }}
+                    </a>
+                </section>
+            </div>
+            <!-- clear btn -->
+            <div class="clear">
+                <button @click="clearForm($event)" class="btn btn-clear"></button>
+            </div>
+        </form>
+        <!-- parent for popups -->
+        <div class="notify"></div>
+
+        <!-- settings modal -->
+        <div id="modal_1" class="overlay">
+            <div class="modal">
+                <div class="modal__header">
+                    <h1>Template settings</h1>
+                    <button class="btn btn-close" @click="closeModal(1)" class="modal__close"></button>
+                </div>
+                <div class="modal__content">
+                    <h2>Almightypush code tamplate:</h2>
+                    <textarea @click="resizeArea($event)" @input="resizeArea($event)">{{ templates[0] }}</textarea>
+                    <h2>OneSignal code tamplate:</h2>
+                    <textarea @click="resizeArea($event)" @input="resizeArea($event)">{{ templates[1] }}</textarea>
+                    <h2>Backoffer code tamplate:</h2>
+                    <textarea @click="resizeArea($event)" @input="resizeArea($event)">{{ templates[2] }}</textarea>
+                    <p>Don't forget to replace <span class="code_str">snippet_id</span> or <span class="code_str">URL</span> with <span class="code_str">PLACE_YOUR_DATA_HERE</span> string for better expierence.</p>
+                </div>
+                <div class="modal__footer">
+                    <button @click="saveModalData" class="btn btn-save"></button>
+                </div>
+            </div>
+        </div>
+        <!-- changelog modal -->
+        <div id="modal_2" class="overlay">
+            <div class="modal">
+                <div class="modal__header">
+                    <h1>Change log</h1>
+                    <button class="btn btn-close" @click="closeModal(2)" class="modal__close"></button>
+                </div>
+                <div class="modal__content">
+                    <h2>03.09.2021</h2>
+                    <ul class="changelog">
+                        <li>
+                            <p>Add automatic slash complition to new domain field.</p>
+                        </li>
+                        <li>
+                            <p>Add "one-click" generating result links button.</p>
+                        </li>
+                        <li>
+                            <p>Add a changelog link in header menu.</p>
+                        </li>
+                    </ul>
+                    <h2>19.07.2021</h2>
+                    <ul class="changelog">
+                        <li>
+                            <p>Add "one-click" clear fields button.</p>
+                        </li>
+                    </ul>
+                    <h2>12.07.2021</h2>
+                    <ul class="changelog">
+                        <li>
+                            <p>Add autoreplacing double quotes for script field.</p>
+                        </li>
+                        <li>
+                            <p>Add templates settings.</p>
+                        </li>
+                        <li>
+                            <p>Add templates for script field.</p>
+                        </li>
+                    </ul>
+
+                </div>
+                <!-- <div class="modal__footer">
+                    <button @click="saveModalData" class="btn btn-save"></button>
+                </div> -->
+            </div>
+        </div>
+
+    </div>
+    </div>
+    <script src="./js/app.js"></script>
+</body>
+
+</html>
